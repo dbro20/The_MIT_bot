@@ -23,28 +23,38 @@ async function main() {
     // Start the scheduler for morning and evening questions
     startScheduler(bot);
 
+    // Start the bot
+    logger.info('Launching bot with polling...');
+
+    // Start polling (don't await - let it run async)
+    bot.launch({
+      dropPendingUpdates: true,
+      allowedUpdates: ['message', 'callback_query'],
+    });
+
     // Handle graceful shutdown
     process.once('SIGINT', () => {
       logger.info('Received SIGINT, shutting down gracefully...');
       bot.stop('SIGINT');
-      process.exit(0);
     });
 
     process.once('SIGTERM', () => {
       logger.info('Received SIGTERM, shutting down gracefully...');
       bot.stop('SIGTERM');
-      process.exit(0);
     });
 
-    // Start the bot
-    await bot.launch();
     logger.info('MIT Bot is running!');
+    logger.info(`Bot username: @the_mit_bot`);
     logger.info(`Target user: @${config.targetUsername}`);
     logger.info(`Morning question: ${config.morningHour}:${String(config.morningMinute).padStart(2, '0')} ${config.timezone}`);
     logger.info(`Evening question: ${config.eveningHour}:${String(config.eveningMinute).padStart(2, '0')} ${config.timezone}`);
 
   } catch (error) {
     logger.error('Fatal error starting bot:', error);
+    if (error instanceof Error) {
+      logger.error('Error message:', error.message);
+      logger.error('Error stack:', error.stack);
+    }
     process.exit(1);
   }
 }

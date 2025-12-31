@@ -152,9 +152,75 @@ LOG_FILE=./logs/bot.log
 NODE_ENV=production
 ```
 
-## Running in Production
+## Deploy to Railway (Recommended for 24/7 Operation)
 
-For production deployments, consider using a process manager like PM2:
+**Railway allows your bot to run 24/7 even when your computer is off.**
+
+### Why Railway?
+- ✅ Runs 24/7 without your computer being on
+- ✅ Auto-restarts if it crashes
+- ✅ $5/month free credit (enough for this bot)
+- ✅ Deploy directly from GitHub
+- ✅ Easy environment variable management
+
+### Deployment Steps
+
+1. **Sign up for Railway**
+   - Go to https://railway.app
+   - Sign in with your GitHub account
+
+2. **Create a New Project**
+   - Click "New Project"
+   - Select "Deploy from GitHub repo"
+   - Choose `The_MIT_bot` repository
+   - Railway will automatically detect it's a Node.js app
+
+3. **Add Environment Variables**
+   - In your Railway project dashboard, go to "Variables"
+   - Add all variables from your `.env.example` file:
+     ```
+     BOT_TOKEN=your_bot_token_here
+     TARGET_USERNAME=gofordylan
+     TIMEZONE=America/New_York
+     MORNING_HOUR=5
+     MORNING_MINUTE=0
+     EVENING_HOUR=19
+     EVENING_MINUTE=0
+     DB_PATH=./data/bot.db
+     LOG_LEVEL=info
+     LOG_FILE=./logs/bot.log
+     NODE_ENV=production
+     ```
+
+4. **Deploy**
+   - Railway will automatically build and deploy your bot
+   - Check the deployment logs to ensure it starts successfully
+   - Look for "MIT Bot is running!" in the logs
+
+5. **Test Your Bot**
+   - Open Telegram and message your bot: `@the_mit_bot`
+   - Send `/start` to register
+   - You should receive a welcome message
+
+6. **Verify Scheduler**
+   - The bot will automatically send messages at 5am and 7pm EST
+   - Check Railway logs to see scheduled messages being sent
+
+### Railway Tips
+
+- **View Logs**: Click on your deployment to see real-time logs
+- **Restart Bot**: Use the "Restart" button in Railway dashboard
+- **Monitor Usage**: Check your usage in Railway settings (this bot uses minimal resources)
+- **Automatic Deploys**: Every time you push to GitHub, Railway auto-deploys the changes
+
+### Cost
+- Railway provides $5/month in free credits
+- This bot typically costs $1-2/month to run
+- More than enough for continuous operation
+
+## Running Locally in Production
+
+If you prefer to run the bot on your own server/computer, consider using PM2:
 
 ```bash
 npm install -g pm2
