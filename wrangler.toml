@@ -1,0 +1,34 @@
+# Cloudflare Workers Configuration for MIT Bot
+
+name = "mit-bot-worker"
+main = "worker/src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Workers Site configuration
+[build]
+command = ""
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "mit-bot-db"
+database_id = "YOUR_DATABASE_ID_HERE" # Replace after creating D1 database
+
+# Environment variables (add these in Cloudflare dashboard or use wrangler secret)
+[vars]
+TARGET_USERNAME = "gofordylan"
+
+# Cron Triggers for scheduled messages
+# 5am EST = 10am UTC (or 9am UTC during DST)
+# 7pm EST = 12am UTC next day (or 11pm UTC during DST)
+# Note: EST is UTC-5, EDT is UTC-4
+# Using standard time (UTC-5) by default
+[[triggers.crons]]
+cron = "0 10 * * *"  # 5am EST (10am UTC)
+
+[[triggers.crons]]
+cron = "0 0 * * *"   # 7pm EST (12am UTC next day)
+
+# Secrets (set these using: wrangler secret put SECRET_NAME)
+# BOT_TOKEN - Your Telegram bot token
+# TELEGRAM_WEBHOOK_SECRET - Random secret for webhook security
